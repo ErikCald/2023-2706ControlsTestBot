@@ -4,13 +4,15 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.Constants.Pneumatics;
+import frc.robot.commands.MotorsCommand;
+import frc.robot.subsystems.MotorSubsystem;
+import frc.robot.subsystems.PneumaticsSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -20,10 +22,11 @@ import frc.robot.subsystems.ExampleSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final PneumaticsSubsystem pneumatics = new PneumaticsSubsystem();
+  private final MotorSubsystem motors = new MotorSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
+  private final CommandXboxController driver =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -42,13 +45,12 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    motors.setDefaultCommand(new MotorsCommand(motors, driver, Axis.kLeftY, Axis.kRightY));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    driver.a().onTrue(pneumatics.toggleSolenoid(Pneumatics.A_CHANNEL));
+    driver.b().onTrue(pneumatics.toggleSolenoid(Pneumatics.B_CHANNEL));
+    driver.x().onTrue(pneumatics.toggleSolenoid(Pneumatics.X_CHANNEL));
+    driver.y().onTrue(pneumatics.toggleSolenoid(Pneumatics.Y_CHANNEL));
   }
 
   /**
@@ -57,7 +59,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return null;
   }
 }

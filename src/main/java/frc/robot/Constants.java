@@ -16,4 +16,26 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static class Pneumatics {
+    public static final int A_CHANNEL = 0;
+    public static final int B_CHANNEL = 1;
+    public static final int Y_CHANNEL = 2;
+    public static final int X_CHANNEL = 3;
+
+    public static final int[] DEFAULT_CHANNELS = {A_CHANNEL, B_CHANNEL, Y_CHANNEL, X_CHANNEL};
+  }
+
+  public static class CanID {
+    public static final int CTRE_PCM_CAN_ID = 0;
+
+    public static final int TALON_LEFT_STICK = 1;
+    public static final int TALON_RIGHT_STICK = 3;
+  }
+
+  public static class Motors {
+    public static final int[] DEFAULT_MOTORS = {CanID.TALON_LEFT_STICK, CanID.TALON_RIGHT_STICK};
+
+    public static final double MAX_SPEED = 0.3;
+  }
 }
