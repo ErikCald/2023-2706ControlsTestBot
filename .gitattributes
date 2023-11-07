@@ -1,2 +1,8 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Force consistent line endings with spotless across all OS's
+*.gradle text eol=lf
+*.java text eol=lf
+*.md text eol=lf
+*.xml text eol=lf
